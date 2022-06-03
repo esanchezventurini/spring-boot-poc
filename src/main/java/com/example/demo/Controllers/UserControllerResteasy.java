@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-//@Validated
-//@Path("/api/RestEasy/users")
-//@RestController
+@Validated
+@Path("/api/RestEasy/users")
+@RestController
 public class UserControllerResteasy {
     private final UserService userService;
 

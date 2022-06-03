@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@Configuration
+@Configuration
 public class ClientProxyConfig {
 
     @Value("${users.api.url.v1}")
     private String apiUrl;
 
-    //@Bean
+    @Bean
     public UserControllerV1 getUserControllerV1() {
         ResteasyClient client = new ResteasyClientBuilderImpl().build();
 
