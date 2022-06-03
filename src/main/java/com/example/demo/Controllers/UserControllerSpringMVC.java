@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +41,7 @@ public class UserControllerSpringMVC {
             method = RequestMethod.GET,
             produces = APPLICATION_JSON_VALUE
     )
-    ResponseEntity<List<User>> getUsers(@QueryParam("gender") Gender gender) {
+    ResponseEntity<List<User>> getUsers(@RequestParam(required = false) Gender gender) {
         return ResponseEntity.ok(userService.getUsers(Optional.ofNullable(gender)));
     }
 

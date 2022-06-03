@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,8 +24,9 @@ public class User {
     @NotNull
     private Gender gender;
     @NotNull
-    @Max(value = 120)
-    @Min(value = 0)
+    //@Max(value = 120)
+    //@Min(value = 0)
+    @Size(min = 0, max = 120)
     private Integer age;
 
     //Sets the name of the property that is going to be used by the JSON in the API.
