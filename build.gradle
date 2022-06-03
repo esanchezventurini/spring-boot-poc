@@ -1,0 +1,35 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-jersey'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation group: 'org.jboss.resteasy', name: 'resteasy-spring-boot-starter', version: '5.0.0.Final'
+	implementation group: 'org.jboss.resteasy', name: 'resteasy-client', version: '5.0.0.Final'
+
+	//Validations
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.0'
+
+	//Swagger
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
