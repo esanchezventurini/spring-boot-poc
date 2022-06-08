@@ -6,23 +6,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @PropertySource("classpath:application.properties")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    private UUID id;
+
     @Value("${adult.age}")
     private Integer adultAge;
 
-    private final UUID id;
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
+
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Gender gender;
+
     @NotNull
     //@Max(value = 120)
     //@Min(value = 0)
@@ -49,6 +58,11 @@ public class User {
         this.gender = gender;
         this.age = age;
         this.email = email;
+    }
+
+
+    public User() {
+
     }
 
     public UUID getId() {
