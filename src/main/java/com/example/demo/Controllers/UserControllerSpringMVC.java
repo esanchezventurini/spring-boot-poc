@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -33,7 +32,7 @@ public class UserControllerSpringMVC {
             path = "{userId}",
             produces = APPLICATION_JSON_VALUE
     )
-    ResponseEntity<User> getUser(@PathVariable("userId") UUID userId) {
+    ResponseEntity<User> getUser(@PathVariable("userId") long userId) {
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
@@ -68,7 +67,7 @@ public class UserControllerSpringMVC {
             path = "{userId}",
             produces = APPLICATION_JSON_VALUE
     )
-    void deleteUser(@PathVariable("userId") UUID userId) {
+    void deleteUser(@PathVariable("userId") long userId) {
         userService.removeUser(userId);
     }
 }

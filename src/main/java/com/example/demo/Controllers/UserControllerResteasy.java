@@ -11,8 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -30,7 +28,7 @@ public class UserControllerResteasy {
     @GET
     @Path("{userId}")
     @Produces(APPLICATION_JSON_VALUE)
-    public User getUser(@PathParam("userId") UUID userId) {
+    public User getUser(@PathParam("userId") long userId) {
         return userService.getUser(userId);
     }
 
@@ -57,7 +55,7 @@ public class UserControllerResteasy {
     @DELETE
     @Path("{userId}")
     @Produces(APPLICATION_JSON_VALUE)
-    public void deleteUser(@PathParam("userId") UUID userId) {
+    public void deleteUser(@PathParam("userId") long userId) {
         userService.removeUser(userId);
     }
 }

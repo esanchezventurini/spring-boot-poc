@@ -9,7 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @PropertySource("classpath:application.properties")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,7 +16,8 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    private UUID id;
+    @GeneratedValue
+    private long id;
 
     @Value("${adult.age}")
     private Integer adultAge;
@@ -33,9 +33,8 @@ public class User {
     private Gender gender;
 
     @NotNull
-    //@Max(value = 120)
-    //@Min(value = 0)
-    @Size(min = 0, max = 120)
+    @Max(value = 120)
+    @Min(value = 0)
     private Integer age;
 
     //Sets the name of the property that is going to be used by the JSON in the API.
@@ -46,13 +45,11 @@ public class User {
 
     //Defining the constructor attributes with @JsonProperty avoids creating an empty constructor.
     //Without that, the class cannot be instantiated from the API.
-    public User(@JsonProperty("id") UUID id,
-                @JsonProperty("firstName") String firstName,
+    public User(@JsonProperty("firstName") String firstName,
                 @JsonProperty("lastName") String lastName,
                 @JsonProperty("gender") Gender gender,
                 @JsonProperty("age") Integer age,
                 @JsonProperty("email") String email) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -65,7 +62,7 @@ public class User {
 
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 

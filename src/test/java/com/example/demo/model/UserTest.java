@@ -14,8 +14,8 @@ public class UserTest {
     User kid;
 
     public UserTest() {
-        adult = new User(UUID.randomUUID(), "Juan1", "Carlos", Gender.MALE, 20, "juancarlos@gmail.com");
-        kid = new User(UUID.randomUUID(), "Juan", "Carlos", Gender.MALE, 17, "juancarlos@gmail.com");
+        adult = new User("Juan1", "Carlos", Gender.MALE, 20, "juancarlos@gmail.com");
+        kid = new User("Juan", "Carlos", Gender.MALE, 17, "juancarlos@gmail.com");
     }
 
 /*
