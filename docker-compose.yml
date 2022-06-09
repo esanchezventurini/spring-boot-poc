@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+
+  my-app:
+    image: z3k3/users-spring-boot:v1
+    ports:
+      [9000:8080]
+    networks:
+      - users-network
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - ./database:/var/lib/mysql
+    ports:
+      [9001:3306]
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+    networks:
+      - users-network
+
+networks:
+    users-network:
+        driver: bridge

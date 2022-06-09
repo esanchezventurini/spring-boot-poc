@@ -20,6 +20,7 @@ public class User {
     private long id;
 
     @Value("${adult.age}")
+    @Transient
     private Integer adultAge;
 
     @NotNull
