@@ -9,6 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @PropertySource("classpath:application.properties")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -44,6 +46,14 @@ public class User {
     @NotNull
     private String email;
 
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Vehicle> vehicles;
+
     //Defining the constructor attributes with @JsonProperty avoids creating an empty constructor.
     //Without that, the class cannot be instantiated from the API.
     public User(@JsonProperty("firstName") String firstName,
@@ -56,6 +66,7 @@ public class User {
         this.gender = gender;
         this.age = age;
         this.email = email;
+        this.vehicles = new ArrayList<>();
     }
 
 
@@ -104,5 +115,9 @@ public class User {
     @JsonIgnore
     public boolean isAdult() {
         return age > adultAge;
+    }
+
+    public void addVehicle(Vehicle vehicle) {
+        this.vehicles.add(vehicle);
     }
 }
