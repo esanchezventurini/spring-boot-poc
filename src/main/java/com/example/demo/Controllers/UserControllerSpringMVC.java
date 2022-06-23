@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Validated
 @RequestMapping(
-        path = "/api/SpringMVC/users"
+        path = "/api/users"
 )
 public class UserControllerSpringMVC {
     private final UserService userService;
@@ -49,6 +49,7 @@ public class UserControllerSpringMVC {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    //TODO: should return the User created
     void addUser(@Valid @RequestBody User user) {
         userService.addUser(user);
     }

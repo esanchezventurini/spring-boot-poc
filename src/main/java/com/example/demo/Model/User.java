@@ -50,7 +50,8 @@ public class User {
         return vehicles;
     }
 
-    @OneToMany
+    //The elements in the list will be saved when the object is saved
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id")
     private List<Vehicle> vehicles;
 

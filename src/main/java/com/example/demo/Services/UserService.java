@@ -3,6 +3,7 @@ package com.example.demo.Services;
 import com.example.demo.DAO.UserRepository;
 import com.example.demo.Model.Gender;
 import com.example.demo.Model.User;
+import com.example.demo.Model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,15 +16,15 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class UserService {
-    private UserRepository realUserRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository realUserRepository) {
-        this.realUserRepository = realUserRepository;
+        this.userRepository = realUserRepository;
     }
 
     public List<User> getUsers(Optional<Gender> gender) {
-        var users = realUserRepository.findAll();
+        var users = userRepository.findAll();
 
         return gender.isPresent() ?
                 users.stream().filter(x -> x.getGender().equals(gender.get())).collect(Collectors.toList())
@@ -31,33 +32,50 @@ public class UserService {
     }
 
     public User getUser(long userId) {
-        var user = realUserRepository.findById(userId);
-        validateUser(user);
-        return user.get();
+        return getUserIfValid(userId);
     }
 
     public void updateUser(User user) {
         validateUserExists(user.getId());
-        realUserRepository.save(user);
+        userRepository.save(user);
     }
 
     public void removeUser(long userId) {
         validateUserExists(userId);
-        realUserRepository.deleteById(userId);
+        userRepository.deleteById(userId);
     }
 
     public void addUser(User user) {
-        realUserRepository.save(user);
+        userRepository.save(user);
     }
 
-    private void validateUser(Optional<User> user) {
+    public User addVehicle(Vehicle vehicle, long userId) {
+        var user = getUserIfValid(userId);
+        user.addVehicle(vehicle);
+        return userRepository.save(user);
+    }
+
+    public List<Vehicle> getUserVehicles(long userId) {
+        var user = this.getUserIfValid(userId);
+        return user.getVehicles();
+    }
+
+    //TODO: Move to Searcher
+    private User getUserIfValid(long userId) {
+        var optionalUser = userRepository.findById(userId);
+        return validateUser(optionalUser);
+    }
+
+    //TODO: Move to Searcher
+    private User validateUser(Optional<User> user) {
         if(user.isEmpty()) {
             throw new ResponseStatusException(NOT_FOUND, "User not found.");
         }
+        return user.get();
     }
 
     private void validateUserExists(long id) {
-        if(!realUserRepository.existsById(id)) {
+        if(!userRepository.existsById(id)) {
             throw new ResponseStatusException(NOT_FOUND, "User not found.");
         }
     }
