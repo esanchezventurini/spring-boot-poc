@@ -6,21 +6,21 @@ import com.example.demo.Model.User;
 import com.example.demo.Model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
+    private final Searcher<User> userSearcher;
+
     @Autowired
-    public UserService(UserRepository realUserRepository) {
-        this.userRepository = realUserRepository;
+    public UserService(UserRepository userRepository, Searcher<User> userSearcher) {
+        this.userRepository = userRepository;
+        this.userSearcher = userSearcher;
     }
 
     public List<User> getUsers(Optional<Gender> gender) {
@@ -32,16 +32,16 @@ public class UserService {
     }
 
     public User getUser(long userId) {
-        return getUserIfValid(userId);
+        return userSearcher.getIfValid(userId, userRepository);
     }
 
     public void updateUser(User user) {
-        validateUserExists(user.getId());
+        userSearcher.validateExistence(user.getId(), userRepository);
         userRepository.save(user);
     }
 
     public void removeUser(long userId) {
-        validateUserExists(userId);
+        userSearcher.validateExistence(userId, userRepository);
         userRepository.deleteById(userId);
     }
 
@@ -50,33 +50,13 @@ public class UserService {
     }
 
     public User addVehicle(Vehicle vehicle, long userId) {
-        var user = getUserIfValid(userId);
+        var user = userSearcher.getIfValid(userId, userRepository);
         user.addVehicle(vehicle);
         return userRepository.save(user);
     }
 
     public List<Vehicle> getUserVehicles(long userId) {
-        var user = this.getUserIfValid(userId);
+        var user = userSearcher.getIfValid(userId, userRepository);
         return user.getVehicles();
-    }
-
-    //TODO: Move to Searcher
-    private User getUserIfValid(long userId) {
-        var optionalUser = userRepository.findById(userId);
-        return validateUser(optionalUser);
-    }
-
-    //TODO: Move to Searcher
-    private User validateUser(Optional<User> user) {
-        if(user.isEmpty()) {
-            throw new ResponseStatusException(NOT_FOUND, "User not found.");
-        }
-        return user.get();
-    }
-
-    private void validateUserExists(long id) {
-        if(!userRepository.existsById(id)) {
-            throw new ResponseStatusException(NOT_FOUND, "User not found.");
-        }
     }
 }

@@ -16,11 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue
-    private long id;
-
+public class User extends BaseEntity{
     @Value("${adult.age}")
     @Transient
     private Integer adultAge;
@@ -73,10 +69,6 @@ public class User {
 
     public User() {
 
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getFirstName() {

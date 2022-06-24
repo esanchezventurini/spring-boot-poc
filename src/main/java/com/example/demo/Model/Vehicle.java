@@ -15,11 +15,7 @@ import java.awt.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "vehicles")
-public abstract class Vehicle {
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public abstract class Vehicle extends BaseEntity{
     @JsonProperty("maxSpeed")
     protected int maxSpeed;
 
@@ -33,10 +29,6 @@ public abstract class Vehicle {
     @Enumerated(EnumType.STRING)
     @JsonProperty("color")
     protected Color color;
-
-    public Long getId() {
-        return id;
-    }
 
     public abstract void changeEngine();
 }
